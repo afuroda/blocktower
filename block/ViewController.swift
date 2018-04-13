@@ -7,12 +7,23 @@
 //
 
 import UIKit
+import SpriteKit
 
 class ViewController: UIViewController {
-
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        // SKViewに型を変換する
+        let skView = self.view as! SKView
+        // ビューと同じサイズでシーンを作成する
+        let scene = GameScene(size:skView.frame.size)
+        // ビューにシーンを表示する
+        skView.presentScene(scene)
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
