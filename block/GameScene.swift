@@ -46,6 +46,12 @@ class GameScene: SKScene ,SKPhysicsContactDelegate{
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         makeBlock1()
+        for touch in touches{
+            let beganTouches = touch.location(in: self)
+            block1Sprite.position=CGPoint(x: beganTouches.x , y: self.frame.size.height-self.frame.size.height/10)
+            print("touchesBeganの時のmakeblockNode:\(block1Sprite.position.x)")
+
+        }
     }
     
    
@@ -54,16 +60,17 @@ class GameScene: SKScene ,SKPhysicsContactDelegate{
         for touch in touches{
            
             let newPosition = touch.location(in: self)
+            
             let oldPosition = touch.previousLocation(in: self)
             let xTranslation = newPosition.x - oldPosition.x
             
             
-            blockPositionx=blockNode1.position.x
+            blockPositionx=block1Sprite.position.x
             blockPositionx += xTranslation
             
             //blockNodeを動かすアニメーション
             let blockAnimation=SKAction.moveTo(x: blockPositionx, duration: 0.0)
-            blockNode1.run(blockAnimation, withKey: "block anime")
+            block1Sprite.run(blockAnimation, withKey: "block anime")
         }
        
     }
@@ -79,15 +86,16 @@ blockNode1.removeAllChildren()
         
         //SpriteNodeの生成
         block1Sprite=SKSpriteNode(color: UIColor.green, size: CGSize(width: self.frame.size.width/7, height: self.frame.size.height/10))
+        
+        print("makeBlockの時のPositionx:\(blockPositionx)")
         //ノードの表示箇所
         block1Sprite.position=CGPoint(x: self.frame.size.width/2 , y: self.frame.size.height-self.frame.size.height/10)
-        print("makeBlockPositionx:\(block1Sprite.position.x)")
-
         
-        blockPositionx=0
+        
+        
 
         blockNode1.addChild(block1Sprite)
-        print("makeblockNode:\(blockNode1.position.x)")
+      
 
         
     }
@@ -96,21 +104,22 @@ blockNode1.removeAllChildren()
         //SpriteNodeの生成
         let downblock1Sprite=SKSpriteNode(color: UIColor.green, size: CGSize(width: self.frame.size.width/7, height: self.frame.size.height/10))
         
-        print("blockPositionx:\(blockPositionx)")
+        print("downBlock1の時のblockPositionx:\(blockPositionx)")
         if blockPositionx==0{
             print("blockPositionx=0")
             blockPositionx=blockNode1.position.x
         }
 
         //ノードの表示箇所
-        downblock1Sprite.position=CGPoint(x: self.frame.size.width/2 + blockPositionx, y: self.frame.size.height-self.frame.size.height/10)
+        downblock1Sprite.position=CGPoint(x: block1Sprite.position.x , y: block1Sprite.position.y)
         
-        print("downBlockPosition:\(downblock1Sprite.position.x)")
+        
         
         //物理演算の追加
         downblock1Sprite.physicsBody=SKPhysicsBody(rectangleOf: downblock1Sprite.size)
         
         addChild(downblock1Sprite)
+        print("downBlock1の時のdownblock1SpritePositionx:\(downblock1Sprite.position.x)")
     }
     
     func makePlate(){
